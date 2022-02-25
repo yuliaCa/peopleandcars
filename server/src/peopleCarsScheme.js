@@ -95,11 +95,20 @@ const cars = [
 ];
 
 const typeDefs = gql`
+  type Car {
+    id: String!
+    year: String
+    model: String
+    price: String
+    personId: String!
+  }
   type Person {
     id: String!
     firstName: String
     lastName: String
+    cars: [Car]
   }
+
   type Query {
     people: [Person]
     person(id: String!): Person
@@ -108,6 +117,21 @@ const typeDefs = gql`
     addPerson(id: String!, firstName: String!, lastName: String!): Person
     updatePerson(id: String!, firstName: String, lastName: String): Person
     removePerson(id: String!): Person
+    addCar(
+      id: String!
+      year: String
+      make: String
+      price: String
+      personId: String!
+    ): Car
+    updateCar(
+      id: String!
+      year: String
+      make: String
+      price: String
+      personId: String!
+    ): Car
+    removeCar(id: String!): Car
   }
 `;
 
@@ -116,6 +140,11 @@ const resolvers = {
     people: () => people,
     person(parent, args, context, info) {
       return find(people, { id: args.id });
+    },
+  },
+  Person: {
+    cars: (person) => {
+      return cars.filter((car) => car.personId === person.id);
     },
   },
   Mutation: {
@@ -152,6 +181,46 @@ const resolvers = {
       });
 
       return removedPerson;
+    },
+
+    addCar(parent, args, context, info) {
+      const newCar = {
+        id: args.id,
+        year: args.year,
+        model: args.model,
+        price: args.price,
+        personId: args.personId,
+      };
+      cars.push(newCar);
+
+      return newCar;
+    },
+
+    updateCar(root, args) {
+      const car = find(cars, { id: args.id });
+
+      if (!car) {
+        throw new Error(`Car with id ${args.id} not found`);
+      }
+
+      car.year = args.year;
+      car.model = args.model;
+      car.price = args.price;
+      car.personId = args.personId;
+
+      return car;
+    },
+    removeCar(root, args) {
+      const removedCar = find(cars, { id: args.id });
+      if (!removedCar) {
+        throw new Error(`Car with id ${args.id} not found`);
+      }
+
+      remove(cars, (c) => {
+        return c.id === removedCar.id;
+      });
+
+      return removedCar;
     },
   },
 };
