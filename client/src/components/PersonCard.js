@@ -4,10 +4,12 @@ import { Card } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import UpdatePerson from "./forms/UpdatePerson";
 import RemovePerson from "./buttons/RemovePerson";
+import CarsList from "./CarsList";
+import AddCar from "./forms/AddCar";
 
 const getStyles = (props) => ({
   card: {
-    width: "500px",
+    width: "800px",
   },
 });
 
@@ -54,7 +56,11 @@ const Person = (props) => {
           ]}
           style={styles.card}
         >
-          {firstName} {lastName}
+          <h2>
+            {firstName} {lastName}
+          </h2>
+          <AddCar />
+          <CarsList personID={props.id} firstName={props.firstName} />
         </Card>
       )}
     </div>

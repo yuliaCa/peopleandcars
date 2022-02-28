@@ -98,6 +98,7 @@ const typeDefs = gql`
   type Car {
     id: String!
     year: String
+    make: String
     model: String
     price: String
     personId: String!
@@ -121,6 +122,7 @@ const typeDefs = gql`
       id: String!
       year: String
       make: String
+      model: String
       price: String
       personId: String!
     ): Car
@@ -128,6 +130,7 @@ const typeDefs = gql`
       id: String!
       year: String
       make: String
+      model: String
       price: String
       personId: String!
     ): Car
@@ -187,6 +190,7 @@ const resolvers = {
       const newCar = {
         id: args.id,
         year: args.year,
+        make: args.make,
         model: args.model,
         price: args.price,
         personId: args.personId,
@@ -204,6 +208,7 @@ const resolvers = {
       }
 
       car.year = args.year;
+      car.make = args.make;
       car.model = args.model;
       car.price = args.price;
       car.personId = args.personId;

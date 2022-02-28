@@ -36,18 +36,24 @@ export const REMOVE_PERSON = gql`
       id
       firstName
       lastName
+      cars
     }
   }
 `;
 
 export const GET_CARS = gql`
-  {
-    cars {
+  query People {
+    people {
       id
-      year
-      make
-      price
-      personId
+      firstName
+      cars {
+        year
+        make
+        model
+        price
+        id
+        personId
+      }
     }
   }
 `;
@@ -57,6 +63,7 @@ export const ADD_CAR = gql`
     $id: String!
     $year: String!
     $make: String!
+    $mode: String
     $price: String!
     $personId: String!
   ) {
@@ -64,12 +71,14 @@ export const ADD_CAR = gql`
       id: $id
       year: $year
       make: $make
+      mode: $model
       price: $price
       personId: $personId
     ) {
       id
       year
       make
+      model
       price
       personId
     }
@@ -81,6 +90,7 @@ export const UPDATE_CAR = gql`
     $id: String!
     $year: String!
     $make: String!
+    $model: String
     $price: String!
     $personId: String!
   ) {
@@ -88,12 +98,14 @@ export const UPDATE_CAR = gql`
       id: $id
       year: $year
       make: $make
+      model: $model
       price: $price
       personId: $personId
     ) {
       id
       year
       make
+      model
       price
       personId
     }
@@ -105,6 +117,7 @@ export const REMOVE_CAR = gql`
     $id: String!
     $year: String!
     $make: String!
+    $model: String
     $price: String!
     $personId: String!
   ) {
@@ -112,12 +125,14 @@ export const REMOVE_CAR = gql`
       id: $id
       year: $year
       make: $make
+      model: $model
       price: $price
       personId: $personId
     ) {
       id
       year
       make
+      model
       price
       personId
     }
