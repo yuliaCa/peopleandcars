@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/client";
 import { filter } from "lodash";
 import { GET_PEOPLE, REMOVE_PERSON } from "../../queries";
 
-const RemovePerson = ({ id, firstName, lastName }) => {
+const RemovePerson = ({ id, firstName, lastName, cars }) => {
   const [removePerson] = useMutation(REMOVE_PERSON, {
     update(proxy, { data: { removePerson } }) {
       const { people } = proxy.readQuery({ query: GET_PEOPLE });
@@ -33,6 +33,7 @@ const RemovePerson = ({ id, firstName, lastName }) => {
             id,
             firstName,
             lastName,
+            cars,
           },
         },
       });

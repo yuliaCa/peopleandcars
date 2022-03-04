@@ -3,17 +3,27 @@ import { useMutation } from "@apollo/client";
 import { filter } from "lodash";
 import { GET_CARS, REMOVE_CAR } from "../../queries";
 
-const RemoveCar = (props, { id, model, make, year, price }) => {
+const RemoveCar = ({ id, model, make, year, price, personId }) => {
   const [removeCar] = useMutation(REMOVE_CAR, {
     update(proxy, { data: { removeCar } }) {
-      const { cars } = proxy.readQuery({ query: GET_CARS });
+      const { people } = proxy.readQuery({ query: GET_CARS });
+
+      const newArr = people.map((p) => {
+        if (p.id === personId) {
+          const newcars = p.cars.filter((c) => c.id !== id);
+          return {
+            id: p.id,
+            firstName: p.firstName,
+            cars: newcars,
+          };
+        }
+        return p;
+      });
 
       proxy.writeQuery({
         query: GET_CARS,
         data: {
-          cars: filter(cars, (c) => {
-            return c.id !== removeCar.id;
-          }),
+          people: [...newArr],
         },
       });
     },
